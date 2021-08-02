@@ -2,6 +2,8 @@ from model_utils.model import CodeReviewClassifier
 from model_utils.data_process import Label
 from model_utils.data_reader import HuaWeiDataReader
 from model_utils.data_process import EngProcessTools
+from model_utils.metrics import HammingLoss,subset_loss
+from model_utils.label_pattern import class_to_list,lis_to_class
 from allennlp.predictors import TextClassifierPredictor
 from tqdm import tqdm
 import torch
@@ -18,7 +20,7 @@ dataset_reader = HuaWeiDataReader(father_model_path, label=label,
                                   inference=True,
                                   eng_data_tool=EngProcessTools(),
                                   max_tokens=512)
-datas = dataset_reader.read("TestData/test.csv")
+datas = dataset_reader.read("TestData/newtest.csv")
 model = CodeReviewClassifier(father_model_path, label=label, out_res=out_put_res)
 with open(saved_model, 'rb') as f:
     model.load_state_dict(
@@ -32,12 +34,20 @@ outlist = []
 for i in outdict:
     outlist.append(outdict[i])
 
-df = pd.read_csv("TestData/test.csv")
+
+outlist = class_to_list(outlist).tolist()
+for i in range(len(outlist)):
+    if outlist[i][3]==1 and outlist[i][1]==0:
+        outlist[i][1]=1
+outlist = lis_to_class(outlist).tolist()
+df = pd.read_csv("TestData/newtest.csv",encoding='utf-8')
 UltimateValue = df["UltimateCategory"].values
-print(outlist)
-ac = 0
-for i in range(len(UltimateValue)):
-    if UltimateValue[i] == outlist[i]:
-        ac+=1
-print(ac/199)
+
+print("Hamming:",HammingLoss(outlist,UltimateValue))
+print("Subset:",subset_loss(outlist,UltimateValue))
+# ac = 0
+# for i in range(len(UltimateValue)):
+#     if UltimateValue[i] == outlist[i]:
+#         ac+=1
+# print(ac/199)
 

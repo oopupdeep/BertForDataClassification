@@ -10,7 +10,7 @@ class NumLabels(Enum):
     Sentiment = 2  # 情感倾向
     CrType = 3  # 评审类别
     ShareKnowledge = 2  # 传播知识
-    UltimateCategory = 8 #终极标签
+    UltimateCategory = 16  # 终极标签
 
 
 

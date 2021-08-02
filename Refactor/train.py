@@ -39,7 +39,7 @@ def generateDataByFunction(dataset_path, label,kfolder):
     df = readAllFiles(dataset_path)
     df = dataTools.dropNa(df)
     # print(df)
-    df.columns = ["cr", "CrType", "Sentiment", "Knowledge", "UltimateCategory"]
+    df.columns = ["cr", "UltimateCategory"]
     print(df)
     df = dataTools.applyAndDropNa(df, dataTools.dropEngHelper, column_name="cr")
     # pretrainModelTools = PreTrainModelTools(prerain_model_path)
@@ -81,7 +81,7 @@ def prepare_train():
     # if not os.path.exists(output_path):
     #     os.makedirs(output_path)
     kfold = 3
-    dataset_path = "TrainingData"
+    dataset_path = "newTrainingData"
     pretrain_model_path = "模型/bert-base-chinese-20210429T072130Z-001/bert-base-chinese"
 
     label = Label("Sentiment", "Sentiment")
@@ -141,7 +141,7 @@ if __name__ == '__main__':
             "patience": 20,
             "useSemi": None,
             "kfold_0":3,
-            "dataset_path":"TrainingData"
+            "dataset_path":"newTrainingData"
             }
     generateDataByFunction(args["dataset_path"],args["label"],args["kfold_0"])
     for i in range(args["kfold_0"]):

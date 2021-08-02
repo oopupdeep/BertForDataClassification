@@ -118,7 +118,7 @@ class HuaWeiDataReader(DatasetReader):
             data = self.readAllFiles(filepath)
         else:
             # test的时候encoding用utf-8，其余时候用gbk
-            data = pd.read_csv(filepath, index_col=self.index_col, encoding='gbk')
+            data = pd.read_csv(filepath, index_col=self.index_col, encoding='utf-8')
         data = data[~data['cr'].isna()]
         data['cr'], _ = self.eng_data_tool.processDataByProcessTypes(data['cr'], self.label.code_preprocess_type,
                                                                      self.label.eng_preprocess_type)

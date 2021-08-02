@@ -1,15 +1,16 @@
 from typing import Dict, Any
 
 import torch
+from torch import tensor
 import torch.nn as nn
 import torch.nn.functional as F
 from allennlp.models import Model
 from allennlp.training.metrics import CategoricalAccuracy, F1Measure
 from transformers import BertTokenizer
-
+from model_utils.label_pattern import class_to_list, lis_to_class
 from model_utils.BertModel import BertModel
 from model_utils.data_process import Label
-
+from model_utils.newCrossEntropy import MutiTask_Cross_Entropy
 
 class CodeReviewClassifier(Model):
     """
@@ -78,8 +79,11 @@ class CodeReviewClassifier(Model):
 
         if label is not None:
             # 计算loss和指标
-            # print(logits, label)
-            loss = F.cross_entropy(logits, label)
+            # label = class_to_list(label)
+            # loss = MutiTask_Cross_Entropy(logits, label)
+            # label = lis_to_class(label)
+            # print(label)
+            loss = F.cross_entropy(logits,label)
             self._accuracy(logits, label)
             for f1_measure in self._f1:
                 f1_measure(logits, label)

@@ -10,18 +10,25 @@ def MutiTask_Cross_Entropy(logits, label):
         s_list = []
         for j in range(row_num):
             s_list.append(label_list[j][i])
-        print(s_list)
-        print(logits)
         sum_loss += F.cross_entropy(logits, tensor(s_list))
     return sum_loss
 
-logits = tensor([[0.13,0.23], [0.24,0.24], [0.25,0.25], [0.26,0.25], [0.35,0.56], [0.56,0.78], [0.23,0.90], [0.25,0.23]])
-label = tensor([[1,0,0],
-                [0,1,0],
-                [0,0,1],
-                [1,1,0],
-                [1,0,1],
-                [0,1,1],
-                [1,1,1],
-                [0,0,0]])
-MutiTask_Cross_Entropy(logits,label)
+logits = tensor([[0.13,0.23], [0.24,0.24], [0.25,0.25], [0.26,0.25], [0.35,0.56], [0.56,0.78], [0.23,0.90], [0.25,0.23],[0.13,0.23], [0.24,0.24], [0.25,0.25], [0.26,0.25], [0.35,0.56], [0.56,0.78], [0.23,0.90], [0.25,0.23]])
+label = tensor([[1,0,0,0],
+                [0,1,0,0],
+                [0,0,1,0],
+                [0,0,0,1],
+                [1,1,0,0],
+                [1,0,1,0],
+                [1,0,0,1],
+                [0,1,1,0],
+                [0,1,0,1],
+                [0,0,1,1],
+                [1,1,1,0],
+                [1,0,1,1],
+                [1,1,0,1],
+                [0,1,1,1],
+                [1,1,1,1],
+                [0,0,0,0]])
+sum_loss = MutiTask_Cross_Entropy(logits,label)
+print(sum_loss)
